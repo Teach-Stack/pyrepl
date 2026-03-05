@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "webrepl",
+  "compatibility_date": "2025-12-10",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "./build/",
+    "not_found_handling": "single-page-application"
+  },
+  "routes": [
+    {
+      "pattern": "pyrepl.teachstack.org",
+      "custom_domain": true
+    }
+  ]
+}
