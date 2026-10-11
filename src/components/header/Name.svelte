@@ -78,7 +78,7 @@
       placeholder="REPL name"
     />
   {:else}
-    <button onclick={startEdit} style="width: {inputWidth}px" aria-label="Edit REPL name">
+    <button onclick={startEdit} class="unstyled" style="width: {inputWidth}px" aria-label="Edit REPL name">
       {repls.ready ? (repls.getCurrentRepl()?.name ?? 'Untitled') : 'Loading...'}
     </button>
   {/if}
