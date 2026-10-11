@@ -1,4 +1,6 @@
 import { sveltekit } from '@sveltejs/kit/vite'
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
+import adapter from '@sveltejs/adapter-static'
 import { defineConfig } from 'vite'
 
 import Icons from 'unplugin-icons/vite'
@@ -16,7 +18,17 @@ console.log(typeof pkg.version)
 
 export default defineConfig({
   plugins: [
-    sveltekit(),
+    sveltekit({
+      preprocess: vitePreprocess(),
+      adapter: adapter({
+        fallback: 'index.html',
+      }),
+      paths: {
+        base: process.argv.includes('dev')
+          ? ''
+          : (process.env.PUBLIC_BASE_PATH as `/${string}` | undefined),
+      },
+    }),
     Icons({ compiler: 'svelte' }),
     {
       name: 'vite-plugin-pyodide',
@@ -25,7 +37,7 @@ export default defineConfig({
         await mkdir(assetsDir, { recursive: true })
         const files = [
           'pyodide-lock.json',
-          'pyodide.asm.js',
+          'pyodide.asm.mjs',
           'pyodide.asm.wasm',
           'python_stdlib.zip',
         ]

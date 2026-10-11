@@ -3,10 +3,7 @@ interface ResourceState<T> {
   pending: boolean
 }
 
-export const resource = <T>(
-  fn: () => Promise<T>,
-  initialValue?: T,
-): ResourceState<T> => {
+export const resource = <T>(fn: () => Promise<T>, initialValue?: T): ResourceState<T> => {
   const _rune = $state<ResourceState<T>>({
     value: initialValue,
     pending: true,

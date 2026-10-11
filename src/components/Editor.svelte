@@ -1,8 +1,8 @@
 <script lang="ts">
-import CodeMirror from 'svelte-codemirror-editor'
-import { python } from '@codemirror/lang-python'
+  import CodeMirror from 'svelte-codemirror-editor'
+  import { python } from '@codemirror/lang-python'
 
-import { editor } from '$lib/state'
+  import { editor } from '#lib/state/index.js'
 </script>
 
 <CodeMirror
@@ -14,8 +14,8 @@ import { editor } from '$lib/state'
   styles={{
     '&': {
       height: '100%',
-      fontSize: '18px'
-    }
+      fontSize: '18px',
+    },
   }}
 />
 

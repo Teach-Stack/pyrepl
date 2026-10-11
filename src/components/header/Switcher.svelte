@@ -1,35 +1,32 @@
 <script lang="ts">
-import DocumentsOutline from '~icons/teenyicons/documents-outline'
-import BinOutline from '~icons/teenyicons/bin-outline'
+  import DocumentsOutline from '~icons/teenyicons/documents-outline'
+  import BinOutline from '~icons/teenyicons/bin-outline'
 
-import { repls } from '$lib/state'
+  import { repls } from '#lib/state/index.js'
 
-let open = $state(false)
+  let open = $state(false)
 
-let userRepls = $derived(repls.ready ? repls.store.find().fetch() : [])
+  let userRepls = $derived(repls.ready ? repls.store.find().fetch() : [])
 
-function switchToRepl(id: string) {
-  repls.setCurrentId(id)
-  open = false
-}
+  function switchToRepl(id: string) {
+    repls.setCurrentId(id)
+    open = false
+  }
 
-async function createNewRepl() {
-  const id = await repls.create()
-  repls.setCurrentId(id)
-  open = false
-}
+  async function createNewRepl() {
+    const id = await repls.create()
+    repls.setCurrentId(id)
+    open = false
+  }
 
-async function deleteRepl(id: string) {
-  await repls.delete(id)
-}
+  async function deleteRepl(id: string) {
+    await repls.delete(id)
+  }
 
-const sortedRepls = $derived(
-  [...userRepls].sort(
-    (a, b) => new Date(b.updated).getTime() - new Date(a.updated).getTime(),
-  ),
-)
+  const sortedRepls = $derived(
+    [...userRepls].sort((a, b) => new Date(b.updated).getTime() - new Date(a.updated).getTime())
+  )
 </script>
-
 
 <button
   onclick={() => (open = true)}
@@ -57,10 +54,7 @@ const sortedRepls = $derived(
     <div class="reel">
       {#each sortedRepls as repl (repl.id)}
         {@const isCurrent = repl.id === repls.currentReplId}
-        <div
-          class:current={isCurrent}
-          class="repl"
-        >
+        <div class:current={isCurrent} class="repl">
           <button
             onclick={() => switchToRepl(repl.id)}
             class="unstyled"
@@ -71,9 +65,7 @@ const sortedRepls = $derived(
                 {repl.name}
               </span>
               {#if isCurrent}
-                <span class="primary tag">
-                  Current
-                </span>
+                <span class="primary tag"> Current </span>
               {/if}
             </div>
             <time class="fluid" datetime={repl.updated}>
@@ -121,7 +113,7 @@ const sortedRepls = $derived(
     --layout-gap: var(--pad-s);
     max-height: 400px;
     /* overflow-y: scroll; */
-    
+
     .repl {
       display: flex;
       align-items: center;
@@ -133,21 +125,20 @@ const sortedRepls = $derived(
       border: 1px solid var(--slate-4);
 
       .cluster {
-        margin-bottom: var(--pad-xs)
+        margin-bottom: var(--pad-xs);
       }
       .tag {
         line-height: var(--lh-xs);
-        opacity: .8;
+        opacity: 0.8;
       }
 
-      
       &.current {
         border-color: var(--blue-3);
         background-color: var(--blue-0);
       }
 
       time {
-        opacity: .7;
+        opacity: 0.7;
         --fl: -1;
       }
 

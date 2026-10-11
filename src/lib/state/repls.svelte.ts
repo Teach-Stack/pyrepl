@@ -1,4 +1,4 @@
-import { REPLCollection, type REPL } from '$lib/db.svelte'
+import { REPLCollection, type REPL } from '#lib/db.svelte.js'
 import { nanoid } from 'nanoid'
 
 class REPLState {
@@ -21,7 +21,7 @@ class REPLState {
     if (this.currentReplId === null || !this.ready) return
     this.store.updateOne(
       { id: { $eq: this.currentReplId } },
-      { $set: { code, updated: new Date().toISOString() } },
+      { $set: { code, updated: new Date().toISOString() } }
     )
   }
 
@@ -31,7 +31,7 @@ class REPLState {
     if (trimmedName === '') return
     this.store.updateOne(
       { id: { $eq: this.currentReplId } },
-      { $set: { name: trimmedName, updated: new Date().toISOString() } },
+      { $set: { name: trimmedName, updated: new Date().toISOString() } }
     )
   }
 

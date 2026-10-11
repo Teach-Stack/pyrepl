@@ -1,33 +1,27 @@
 <script lang="ts">
-import { editor } from '$lib/state'
-import { page } from '$app/state'
+  import { editor } from '#lib/state/index.js'
+  import { page } from '$app/state'
 
-import Switcher from './header/Switcher.svelte'
-import Name from './header/Name.svelte'
+  import Switcher from './header/Switcher.svelte'
+  import Name from './header/Name.svelte'
 
-import GithubOutline from '~icons/teenyicons/github-outline'
+  import GithubOutline from '~icons/teenyicons/github-outline'
 
-let sharedName = $derived(page.url.searchParams.get('name'))
+  let sharedName = $derived(page.url.searchParams.get('name'))
 </script>
 
 <header>
   <div class="flex">
     <div class="app-name">
-      <h5>
-        PyREPL
-      </h5>
+      <h5>PyREPL</h5>
       <small>v{PKG.version}</small>
     </div>
     {#if !editor.readOnly}
-      <div class="seperator">
-        /
-      </div>
+      <div class="seperator">/</div>
       <Name />
       <Switcher />
     {:else if sharedName}
-      <div class="seperator">
-        /
-      </div>
+      <div class="seperator">/</div>
       <span>
         {sharedName}
       </span>
@@ -41,7 +35,7 @@ let sharedName = $derived(page.url.searchParams.get('name'))
     class="btn"
   >
     <GithubOutline />
-</a>
+  </a>
 </header>
 
 <style>

@@ -1,21 +1,21 @@
 <script lang="ts">
-import { repls, editor } from '$lib/state'
-import { goto } from '$app/navigation'
-import { page } from '$app/state'
+  import { repls, editor } from '#lib/state/index.js'
+  import { goto } from '$app/navigation'
+  import { page } from '$app/state'
 
-let sharedName = $derived(page.url.searchParams.get('name'))
+  let sharedName = $derived(page.url.searchParams.get('name'))
 
-async function saveAsNew() {
-  if (!repls.ready) return
+  async function saveAsNew() {
+    if (!repls.ready) return
 
-  const id = await repls.create({
-    name: sharedName ?? 'Untitled',
-    code: editor.value,
-  })
-  repls.setCurrentId(id)
-  editor.readOnly = false
-  goto('/')
-}
+    const id = await repls.create({
+      name: sharedName ?? 'Untitled',
+      code: editor.value,
+    })
+    repls.setCurrentId(id)
+    editor.readOnly = false
+    goto('/')
+  }
 </script>
 
 {#if editor.readOnly}
@@ -24,9 +24,7 @@ async function saveAsNew() {
       <h5>Read Only Mode</h5>
       <p class="fs-xs">You are viewing a shared REPL, save a copy to make changes</p>
     </div>
-    <button onclick={saveAsNew}>
-      Save
-    </button>
+    <button onclick={saveAsNew}> Save </button>
   </div>
 {/if}
 

@@ -1,98 +1,90 @@
 <script lang="ts">
-import { Xterm, XtermAddon, type Terminal } from '@battlefieldduck/xterm-svelte'
-import { worker, terminal } from '$lib/state'
+  import { Xterm, XtermAddon, type Terminal } from '@battlefieldduck/xterm-svelte'
+  import { worker, terminal } from '#lib/state/index.js'
 
-let inputArray: Uint8Array
-let syncArray: Int32Array
+  let inputArray: Uint8Array
+  let syncArray: Int32Array
 
-worker.onStdout = (buffer) => {
-  if (terminal.el === undefined) return
-  console.debug(`[pyrepl:terminal] received stdout buffer:`, buffer)
-  terminal.el.write(buffer)
-}
+  worker.onStdout = (buffer) => {
+    if (terminal.el === undefined) return
+    console.debug(`[pyrepl:terminal] received stdout buffer:`, buffer)
+    terminal.el.write(buffer)
+  }
 
-worker.onStdin = () => {
-  if (terminal.el === undefined) return
-  terminal.waitingForInput = true
-  terminal.el.focus()
-}
+  worker.onStdin = () => {
+    if (terminal.el === undefined) return
+    terminal.waitingForInput = true
+    terminal.el.focus()
+  }
 
-worker.onReady = (buffers) => {
-  if (terminal.el === undefined) return
+  worker.onReady = (buffers) => {
+    if (terminal.el === undefined) return
 
-  syncArray = new Int32Array(buffers.syncBuffer)
-  inputArray = new Uint8Array(buffers.inputBuffer)
+    syncArray = new Int32Array(buffers.syncBuffer)
+    inputArray = new Uint8Array(buffers.inputBuffer)
 
-  terminal.el.writeln('Python Ready ')
-}
+    terminal.el.writeln('Python Ready ')
+  }
 
-worker.onStderr = (message) => {
-  if (terminal.el === undefined) return
-  terminal.el.write(`\x1b[31m ${message}`)
-}
+  worker.onStderr = (message) => {
+    if (terminal.el === undefined) return
+    terminal.el.write(`\x1b[31m ${message}`)
+  }
 
-const onLoad = async (term: Terminal) => {
-  console.debug('[pyrepl:terminal] terminal loaded')
-  console.debug('[pyrepl:terminal] loading fit addon')
-  const fitAddon = new (await XtermAddon.FitAddon()).FitAddon()
-  console.debug('[pyrepl:terminal] fit addon loaded, applying to terminal')
-  term.loadAddon(fitAddon)
-  console.debug(
-    '[pyrepl:terminal] fit addon applied, fitting terminal to container',
-  )
-  fitAddon.fit()
-  console.debug('[pyrepl:terminal] terminal fitted to container')
-
-  console.debug('[pyrepl:terminal] setting resize function')
-  terminal.resize = () => {
-    console.debug('[pyrepl:terminal] resizing terminal')
+  const onLoad = async (term: Terminal) => {
+    console.debug('[pyrepl:terminal] terminal loaded')
+    console.debug('[pyrepl:terminal] loading fit addon')
+    const fitAddon = new (await XtermAddon.FitAddon()).FitAddon()
+    console.debug('[pyrepl:terminal] fit addon loaded, applying to terminal')
+    term.loadAddon(fitAddon)
+    console.debug('[pyrepl:terminal] fit addon applied, fitting terminal to container')
     fitAddon.fit()
-  }
+    console.debug('[pyrepl:terminal] terminal fitted to container')
 
-  term.writeln('Initializing Python Environment ....')
-}
-
-const onKey = async ({
-  key,
-  domEvent,
-}: {
-  key: string
-  domEvent: KeyboardEvent
-}) => {
-  if (!terminal.waitingForInput || terminal.el === undefined) return
-  const printable = !domEvent.altKey && !domEvent.ctrlKey && !domEvent.metaKey
-
-  if (domEvent.key === 'Enter') {
-    terminal.el.write('\r\n')
-    const bytes = new TextEncoder().encode(terminal.currentLine)
-
-    inputArray.set(bytes)
-
-    Atomics.store(syncArray, 1, bytes.length)
-
-    Atomics.store(syncArray, 0, 1)
-    Atomics.notify(syncArray, 0, 1)
-    terminal.waitingForInput = false
-    terminal.currentLine = ''
-  } else if (domEvent.key === 'Backspace') {
-    if (terminal.currentLine.length > 0) {
-      terminal.currentLine = terminal.currentLine.slice(0, -1)
-      terminal.el.write('\b \b')
+    console.debug('[pyrepl:terminal] setting resize function')
+    terminal.resize = () => {
+      console.debug('[pyrepl:terminal] resizing terminal')
+      fitAddon.fit()
     }
-  } else if (printable) {
-    terminal.currentLine += key
-    terminal.el.write(key)
+
+    term.writeln('Initializing Python Environment ....')
   }
-}
+
+  const onKey = async ({ key, domEvent }: { key: string; domEvent: KeyboardEvent }) => {
+    if (!terminal.waitingForInput || terminal.el === undefined) return
+    const printable = !domEvent.altKey && !domEvent.ctrlKey && !domEvent.metaKey
+
+    if (domEvent.key === 'Enter') {
+      terminal.el.write('\r\n')
+      const bytes = new TextEncoder().encode(terminal.currentLine)
+
+      inputArray.set(bytes)
+
+      Atomics.store(syncArray, 1, bytes.length)
+
+      Atomics.store(syncArray, 0, 1)
+      Atomics.notify(syncArray, 0, 1)
+      terminal.waitingForInput = false
+      terminal.currentLine = ''
+    } else if (domEvent.key === 'Backspace') {
+      if (terminal.currentLine.length > 0) {
+        terminal.currentLine = terminal.currentLine.slice(0, -1)
+        terminal.el.write('\b \b')
+      }
+    } else if (printable) {
+      terminal.currentLine += key
+      terminal.el.write(key)
+    }
+  }
 </script>
 
-<Xterm 
+<Xterm
   bind:terminal={terminal.el}
   {onLoad}
   {onKey}
   options={{
     fontSize: 18,
-    convertEol: true
+    convertEol: true,
   }}
   class="terminal"
 />
