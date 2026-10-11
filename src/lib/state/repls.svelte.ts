@@ -1,4 +1,4 @@
-import { REPLCollection, type REPL } from '$lib/db.svelte'
+import { REPLCollection, type REPL } from '#lib/db.svelte.js'
 import { nanoid } from 'nanoid'
 
 class REPLState {

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { repls, editor } from '$lib/state'
+import { repls, editor } from '#lib/state/index.js'
 import { goto } from '$app/navigation'
 import { page } from '$app/state'
 

@@ -1,9 +1,9 @@
-import Worker from '$lib/worker?worker'
+import Worker from '#lib/worker/index.js?worker'
 import {
   eventType,
   type WorkerEvent,
   type ReadyEvent,
-} from '$lib/worker/events'
+} from '#lib/worker/events.js'
 
 class WorkerState {
   _worker: Worker

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { editor } from '$lib/state'
+import { editor } from '#lib/state/index.js'
 import { page } from '$app/state'
 
 import Switcher from './header/Switcher.svelte'

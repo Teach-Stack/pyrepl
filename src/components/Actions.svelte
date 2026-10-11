@@ -1,6 +1,6 @@
 <script lang="ts">
-import { utoa } from '$lib'
-import { terminal, worker, editor, repls } from '$lib/state'
+import { utoa } from '#lib'
+import { terminal, worker, editor, repls } from '#lib/state/index.js'
 
 import RightOutline from '~icons/teenyicons/right-outline'
 import LeftOutline from '~icons/teenyicons/left-outline'

@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Xterm, XtermAddon, type Terminal } from '@battlefieldduck/xterm-svelte'
-import { worker, terminal } from '$lib/state'
+import { worker, terminal } from '#lib/state/index.js'
 
 let inputArray: Uint8Array
 let syncArray: Int32Array

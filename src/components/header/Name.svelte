@@ -1,5 +1,5 @@
 <script lang="ts">
-import { repls } from '$lib/state'
+import { repls } from '#lib/state/index.js'
 
 const MIN_INPUT_WIDTH = 200
 
@@ -86,7 +86,6 @@ function handleKeydown(e: KeyboardEvent) {
     <button
       onclick={startEdit}
       style="width: {inputWidth}px"
-      class="unstyled text-left text-lg font-sans min-w-50 text-slate-8 hover:text-slate-6 transition-all cursor-text px-2 py-1 rounded hover:bg-slate-1 w-full truncate"
       aria-label="Edit REPL name"
     >
       {repls.ready ? (repls.getCurrentRepl()?.name ?? 'Untitled') : 'Loading...'}

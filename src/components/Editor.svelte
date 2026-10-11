@@ -2,7 +2,7 @@
 import CodeMirror from 'svelte-codemirror-editor'
 import { python } from '@codemirror/lang-python'
 
-import { editor } from '$lib/state'
+import { editor } from '#lib/state/index.js'
 </script>
 
 <CodeMirror

@@ -2,7 +2,7 @@
 import DocumentsOutline from '~icons/teenyicons/documents-outline'
 import BinOutline from '~icons/teenyicons/bin-outline'
 
-import { repls } from '$lib/state'
+import { repls } from '#lib/state/index.js'
 
 let open = $state(false)
 

@@ -6,9 +6,9 @@ import Header from '../components/Header.svelte'
 import ReadOnlyBanner from '../components/ReadOnlyBanner.svelte'
 import Welcome from '../components/Welcome.svelte'
 
-import { repls, terminal, editor } from '$lib/state'
+import { repls, terminal, editor } from '#lib/state/index.js'
 import { page } from '$app/state'
-import { atou } from '$lib'
+import { atou } from '#lib'
 
 let lastLoadedId = $state('')
 
