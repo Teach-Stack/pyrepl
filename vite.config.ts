@@ -24,7 +24,9 @@ export default defineConfig({
         fallback: 'index.html',
       }),
       paths: {
-        base: process.argv.includes('dev') ? '' : (process.env.PUBLIC_BASE_PATH as `/${string}` | undefined),
+        base: process.argv.includes('dev')
+          ? ''
+          : (process.env.PUBLIC_BASE_PATH as `/${string}` | undefined),
       },
     }),
     Icons({ compiler: 'svelte' }),

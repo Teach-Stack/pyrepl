@@ -1,76 +1,71 @@
 <script lang="ts">
-import { repls } from '#lib/state/index.js'
+  import { repls } from '#lib/state/index.js'
 
-const MIN_INPUT_WIDTH = 200
+  const MIN_INPUT_WIDTH = 200
 
-let newName = $state('')
-let isEditing = $state(false)
-let inputWidth = $state(100)
+  let newName = $state('')
+  let isEditing = $state(false)
+  let inputWidth = $state(100)
 
-let inputElement: HTMLInputElement | undefined = $state()
-let measureElement: HTMLSpanElement | undefined = $state()
+  let inputElement: HTMLInputElement | undefined = $state()
+  let measureElement: HTMLSpanElement | undefined = $state()
 
-$effect(() => {
-  if (measureElement && newName) {
-    const newWidth = measureElement.offsetWidth + 4
-    if (newWidth < MIN_INPUT_WIDTH) {
-      inputWidth = MIN_INPUT_WIDTH
+  $effect(() => {
+    if (measureElement && newName) {
+      const newWidth = measureElement.offsetWidth + 4
+      if (newWidth < MIN_INPUT_WIDTH) {
+        inputWidth = MIN_INPUT_WIDTH
+      } else {
+        inputWidth = newWidth
+      }
     } else {
-      inputWidth = newWidth
+      inputWidth = MIN_INPUT_WIDTH
     }
-  } else {
-    inputWidth = MIN_INPUT_WIDTH
+  })
+
+  $effect(() => {
+    if (!repls.ready) return
+    const currentRepl = repls.getCurrentRepl()
+    newName = currentRepl?.name ?? 'Untitled'
+  })
+
+  function startEdit() {
+    isEditing = true
+
+    // Focus input after it's rendered
+    setTimeout(() => {
+      if (inputElement) {
+        inputElement.focus()
+        inputElement.select()
+      }
+    }, 0)
   }
-})
 
-$effect(() => {
-  if (!repls.ready) return
-  const currentRepl = repls.getCurrentRepl()
-  newName = currentRepl?.name ?? 'Untitled'
-})
-
-function startEdit() {
-  isEditing = true
-
-  // Focus input after it's rendered
-  setTimeout(() => {
-    if (inputElement) {
-      inputElement.focus()
-      inputElement.select()
+  function saveEdit() {
+    if (newName.trim() !== '') {
+      repls.updateCurrentReplName(newName)
     }
-  }, 0)
-}
-
-function saveEdit() {
-  if (newName.trim() !== '') {
-    repls.updateCurrentReplName(newName)
+    isEditing = false
   }
-  isEditing = false
-}
 
-function cancelEdit() {
-  isEditing = false
-}
-
-function handleKeydown(e: KeyboardEvent) {
-  if (e.key === 'Enter') {
-    saveEdit()
-  } else if (e.key === 'Escape') {
-    cancelEdit()
+  function cancelEdit() {
+    isEditing = false
   }
-}
+
+  function handleKeydown(e: KeyboardEvent) {
+    if (e.key === 'Enter') {
+      saveEdit()
+    } else if (e.key === 'Escape') {
+      cancelEdit()
+    }
+  }
 </script>
 
-
- <div>
-  <span
-    bind:this={measureElement}
-    aria-hidden="true"
-    class="fluid"
-  >
+<div>
+  <span bind:this={measureElement} aria-hidden="true" class="fluid">
     {newName}
   </span>
-  
+
   {#if isEditing}
     <input
       bind:this={inputElement}
@@ -83,11 +78,7 @@ function handleKeydown(e: KeyboardEvent) {
       placeholder="REPL name"
     />
   {:else}
-    <button
-      onclick={startEdit}
-      style="width: {inputWidth}px"
-      aria-label="Edit REPL name"
-    >
+    <button onclick={startEdit} style="width: {inputWidth}px" aria-label="Edit REPL name">
       {repls.ready ? (repls.getCurrentRepl()?.name ?? 'Untitled') : 'Loading...'}
     </button>
   {/if}
@@ -138,7 +129,6 @@ function handleKeydown(e: KeyboardEvent) {
       margin-block-end: 0;
     }
   }
-
 
   @media (width >= 1024px) {
     div {

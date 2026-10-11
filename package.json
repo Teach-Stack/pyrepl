@@ -1,33 +1,20 @@
 {
   "name": "pyrepl",
   "version": "0.3.7",
+  "license": "AGPL-3.0-only",
   "type": "module",
   "imports": {
     "#lib": "./src/lib/index.ts",
     "#lib/*": "./src/lib/*"
   },
-  "license": "AGPL-3.0-only",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "2.3.11",
-    "@fontsource-variable/space-grotesk": "^5.2.10",
-    "@iconify-json/svg-spinners": "^1.2.4",
-    "@iconify-json/teenyicons": "^1.2.2",
-    "@sveltejs/kit": "^3.0.1",
-    "@sveltejs/vite-plugin-svelte": "^7.3.1",
-    "@types/node": "^24.19.2",
-    "svelte": "^5.57.2",
-    "svelte-check": "^4.7.6",
-    "typescript": "^6.0.3",
-    "unplugin-icons": "^24.0.0",
-    "vite": "^8.3.4",
-    "wrangler": "^4.149.0"
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "lint": "oxlint",
+    "fmt": "oxfmt"
   },
   "dependencies": {
     "@battlefieldduck/xterm-svelte": "^2.3.0",
@@ -42,6 +29,22 @@
     "nanoid": "^6.0.2",
     "pyodide": "^314.0.7",
     "svelte-codemirror-editor": "^2.1.0"
+  },
+  "devDependencies": {
+    "@fontsource-variable/space-grotesk": "^5.2.10",
+    "@iconify-json/svg-spinners": "^1.2.4",
+    "@iconify-json/teenyicons": "^1.2.2",
+    "@sveltejs/kit": "^3.0.1",
+    "@sveltejs/vite-plugin-svelte": "^7.3.1",
+    "@types/node": "^24.19.2",
+    "oxfmt": "^0.72.0",
+    "oxlint": "^1.87.0",
+    "svelte": "^5.57.2",
+    "svelte-check": "^4.7.6",
+    "typescript": "^6.0.3",
+    "unplugin-icons": "^24.0.0",
+    "vite": "^8.3.4",
+    "wrangler": "^4.149.0"
   },
   "packageManager": "pnpm@12.11.2"
 }

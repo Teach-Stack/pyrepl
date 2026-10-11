@@ -1,54 +1,54 @@
 <script lang="ts">
-import Terminal from '../components/Terminal.svelte'
-import Actions from '../components/Actions.svelte'
-import Editor from '../components/Editor.svelte'
-import Header from '../components/Header.svelte'
-import ReadOnlyBanner from '../components/ReadOnlyBanner.svelte'
-import Welcome from '../components/Welcome.svelte'
+  import Terminal from '../components/Terminal.svelte'
+  import Actions from '../components/Actions.svelte'
+  import Editor from '../components/Editor.svelte'
+  import Header from '../components/Header.svelte'
+  import ReadOnlyBanner from '../components/ReadOnlyBanner.svelte'
+  import Welcome from '../components/Welcome.svelte'
 
-import { repls, terminal, editor } from '#lib/state/index.js'
-import { page } from '$app/state'
-import { atou } from '#lib'
+  import { repls, terminal, editor } from '#lib/state/index.js'
+  import { page } from '$app/state'
+  import { atou } from '#lib'
 
-let lastLoadedId = $state('')
+  let lastLoadedId = $state('')
 
-let sharedCode = $derived(page.url.searchParams.get('code'))
+  let sharedCode = $derived(page.url.searchParams.get('code'))
 
-$effect(() => {
-  if (sharedCode !== null) {
-    try {
-      const code = atou(sharedCode)
-      if (code !== editor.value) {
-        console.debug('[pyrepl] loading shared code from url')
-        setTimeout(() => {
-          editor.value = code
-          editor.readOnly = true
-        }, 0)
+  $effect(() => {
+    if (sharedCode !== null) {
+      try {
+        const code = atou(sharedCode)
+        if (code !== editor.value) {
+          console.debug('[pyrepl] loading shared code from url')
+          setTimeout(() => {
+            editor.value = code
+            editor.readOnly = true
+          }, 0)
+        }
+      } catch (e) {
+        // @ts-expect-error error type unknown
+        if (e.name === 'InvalidCharacterError') {
+          console.warn('[pyrepl] invalid shared code in url')
+        }
       }
-    } catch (e) {
-      // @ts-expect-error error type unknown
-      if (e.name === 'InvalidCharacterError') {
-        console.warn('[pyrepl] invalid shared code in url')
+    } else if (repls.ready && lastLoadedId !== repls.currentReplId) {
+      lastLoadedId = repls.currentReplId ?? ''
+      console.debug('[pyrepl] loading code from indexedb')
+      editor.value = repls.getCurrentRepl()?.code ?? ''
+    }
+  })
+
+  $effect(() => {
+    if (repls.ready && !editor.readOnly) {
+      const currentRepl = repls.getCurrentRepl()
+      if (currentRepl === undefined) {
+        console.warn('[pyrepl] unable to find current repl')
+      } else if (editor.value !== currentRepl.code) {
+        console.debug('[pyrepl] updating code in indexedb')
+        repls.updateCurrentRepl(editor.value)
       }
     }
-  } else if (repls.ready && lastLoadedId !== repls.currentReplId) {
-    lastLoadedId = repls.currentReplId ?? ''
-    console.debug('[pyrepl] loading code from indexedb')
-    editor.value = repls.getCurrentRepl()?.code ?? ''
-  }
-})
-
-$effect(() => {
-  if (repls.ready && !editor.readOnly) {
-    const currentRepl = repls.getCurrentRepl()
-    if (currentRepl === undefined) {
-      console.warn('[pyrepl] unable to find current repl')
-    } else if (editor.value !== currentRepl.code) {
-      console.debug('[pyrepl] updating code in indexedb')
-      repls.updateCurrentRepl(editor.value)
-    }
-  }
-})
+  })
 </script>
 
 <svelte:window onresize={terminal.resize} />
@@ -68,93 +68,92 @@ $effect(() => {
 
   <Actions />
 
-
   <Editor />
 
   <Terminal />
 </main>
 
 <style>
-main {
-  height: 100vh;
-
-  background-color: var(--slate-1);
-
-  padding: var(--pad-s);
-
-  overflow: hidden;
-
-  display: grid;
-  gap: var(--pad-s);
-  grid-template-rows: repeat(2, 48px 1fr);
-  grid-template-columns: 1fr;
-  grid-template-areas:
-    "header"
-    "editor"
-    "actions"
-    "output"
-}
-
-main.readOnly {
-  grid-template-rows: 48px auto 1fr 48px 1fr;
-  grid-template-areas:
-    "header"
-    "banner"
-    "editor"
-    "actions"
-    "output"
-}
-
-main.fullWidthTerminal {
-  grid-template-rows: 48px 48px 1fr;
-  grid-template-areas:
-    "header"
-    "actions"
-    "output";
-
-  :global(.editor) {
-    display: none;
-  }
-}
-
-@media (width >= 1024px) {
   main {
-    grid-template-columns: 1.2fr minmax(384px, 0.8fr);
-    grid-template-rows: 48px 1fr;
+    height: 100vh;
+
+    background-color: var(--slate-1);
+
+    padding: var(--pad-s);
+
+    overflow: hidden;
+
+    display: grid;
+    gap: var(--pad-s);
+    grid-template-rows: repeat(2, 48px 1fr);
+    grid-template-columns: 1fr;
     grid-template-areas:
-      "header actions"
-      "editor output";
+      'header'
+      'editor'
+      'actions'
+      'output';
   }
 
   main.readOnly {
-    grid-template-rows: 48px auto 1fr;
+    grid-template-rows: 48px auto 1fr 48px 1fr;
     grid-template-areas:
-      "header actions"
-      "banner output"
-      "editor output";
-  }
-
-  main.biggerTerminal {
-    grid-template-columns: minmax(384px, 0.8fr) 1.2fr;
+      'header'
+      'banner'
+      'editor'
+      'actions'
+      'output';
   }
 
   main.fullWidthTerminal {
-    grid-template-rows: 48px 1fr;
+    grid-template-rows: 48px 48px 1fr;
     grid-template-areas:
-      "header actions"
-      "output output";
+      'header'
+      'actions'
+      'output';
+
+    :global(.editor) {
+      display: none;
+    }
   }
 
-  main.fullWidthTerminal.readOnly {
-    grid-template-rows: 48px auto 1fr;
-    grid-template-areas:
-      "header actions"
-      "banner banner"
-      "output output";
-  }
-}
+  @media (width >= 1024px) {
+    main {
+      grid-template-columns: 1.2fr minmax(384px, 0.8fr);
+      grid-template-rows: 48px 1fr;
+      grid-template-areas:
+        'header actions'
+        'editor output';
+    }
 
-:global(.xterm) {
-  padding: 1rem 1rem 4px;
-}
+    main.readOnly {
+      grid-template-rows: 48px auto 1fr;
+      grid-template-areas:
+        'header actions'
+        'banner output'
+        'editor output';
+    }
+
+    main.biggerTerminal {
+      grid-template-columns: minmax(384px, 0.8fr) 1.2fr;
+    }
+
+    main.fullWidthTerminal {
+      grid-template-rows: 48px 1fr;
+      grid-template-areas:
+        'header actions'
+        'output output';
+    }
+
+    main.fullWidthTerminal.readOnly {
+      grid-template-rows: 48px auto 1fr;
+      grid-template-areas:
+        'header actions'
+        'banner banner'
+        'output output';
+    }
+  }
+
+  :global(.xterm) {
+    padding: 1rem 1rem 4px;
+  }
 </style>

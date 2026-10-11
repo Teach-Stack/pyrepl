@@ -1,30 +1,33 @@
 <script lang="ts">
-let dialog: HTMLDialogElement | undefined
+  let dialog: HTMLDialogElement | undefined
 
-$effect(() => {
-  if (typeof window !== 'undefined' && dialog !== undefined) {
-    const dismissed = JSON.parse(
-      localStorage.getItem('welcomeDismissed') ?? 'false',
-    )
-    if (!dismissed) {
-      dialog.showModal()
+  $effect(() => {
+    if (typeof window !== 'undefined' && dialog !== undefined) {
+      const dismissed = JSON.parse(localStorage.getItem('welcomeDismissed') ?? 'false')
+      if (!dismissed) {
+        dialog.showModal()
+      }
     }
-  }
-})
+  })
 
-$effect(() => {
-  // if (!open) {
-  //   localStorage.setItem('welcomeDismissed', 'true')
-  // }
-})
+  $effect(() => {
+    // if (!open) {
+    //   localStorage.setItem('welcomeDismissed', 'true')
+    // }
+  })
 </script>
 
-<dialog bind:this={dialog} onclose={() => localStorage.setItem('welcomeDismissed', 'true')} closedby="any">
+<dialog
+  bind:this={dialog}
+  onclose={() => localStorage.setItem('welcomeDismissed', 'true')}
+  closedby="any"
+>
   <div class="stack">
     <h5>Welcome to PyREPL</h5>
 
     <p>
-      PyREPL is a web-based Python REPL environment that runs entirely in your browser using WebAssembly.
+      PyREPL is a web-based Python REPL environment that runs entirely in your browser using
+      WebAssembly.
     </p>
 
     <div class="stack">
@@ -38,9 +41,7 @@ $effect(() => {
     </div>
 
     <div class="flex">
-      <button class="primary" onclick={() => dialog?.close()}>
-        Get Started
-      </button>
+      <button class="primary" onclick={() => dialog?.close()}> Get Started </button>
     </div>
   </div>
 </dialog>
