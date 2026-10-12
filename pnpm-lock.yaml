@@ -185,8 +185,8 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0(@sveltejs/kit@3.0.1(@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.2)(vite@8.3.4(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.6.1)))(svelte@5.57.2)(typescript@6.0.3)(vite@8.3.4(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.6.1)))
       '@teach-stack/css':
-        specifier: ^0.1.4
-        version: 0.1.4(@fontsource-variable/space-grotesk@5.2.10)
+        specifier: ^0.1.5
+        version: 0.1.5(@fontsource-variable/space-grotesk@5.3.0)
       '@xterm/xterm':
         specifier: ^6.0.0
         version: 6.0.0
@@ -204,8 +204,8 @@ importers:
         version: 2.1.0(codemirror@6.0.2)(svelte@5.57.2)
     devDependencies:
       '@fontsource-variable/space-grotesk':
-        specifier: ^5.2.10
-        version: 5.2.10
+        specifier: ^5.3.0
+        version: 5.3.0
       '@iconify-json/svg-spinners':
         specifier: ^1.2.4
         version: 1.2.4
@@ -489,8 +489,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@fontsource-variable/space-grotesk@5.2.10':
-    resolution: {integrity: sha512-yJQO/o35/hAP3CFnpdFTwQku2yzJOae2HIpBmqkOVoxhhXJaQP3g+b6Jrz7u+eI7A5ZdCIf88uMWpBJdFiGr5w==}
+  '@fontsource-variable/space-grotesk@5.3.0':
+    resolution: {integrity: sha512-2IxmvfB08i9vnGB3Ym/AXvhRE+8XOjWMXIyDum03c+tPwH0FUoMNQfGpU8NXPxjbws0Vvss3AH0Zqt4oJBBAdw==}
 
   '@iconify-json/svg-spinners@1.2.4':
     resolution: {integrity: sha512-ayn0pogFPwJA1WFZpDnoq9/hjDxN+keeCMyThaX4d3gSJ3y0mdKUxIA/b1YXWGtY9wVtZmxwcvOIeEieG4+JNg==}
@@ -1260,8 +1260,8 @@ packages:
       svelte: ^5.46.4
       vite: ^8.0.0-beta.7 || ^8.0.0
 
-  '@teach-stack/css@0.1.4':
-    resolution: {integrity: sha512-RY9D/PHJtxVZg8xb0DO1weSDM6ZHC9TyER9rLXDKZInIzAF+Ta/ntAc1+fSJVz1EBAvH1xbkKYBnFQN54qQ1PA==}
+  '@teach-stack/css@0.1.5':
+    resolution: {integrity: sha512-QaI/E5H7f+vlWFDJ6cPHxZ1c+8ocqobM9Tu26bA8ERcpk7aNjyR2XNnrfRrU06zIbXJHVxaHGg+Rd4rKvXp7Uw==}
     peerDependencies:
       '@fontsource-variable/space-grotesk': ^5.2.10
 
@@ -2072,7 +2072,7 @@ snapshots:
   '@esbuild/win32-x64@0.28.2':
     optional: true
 
-  '@fontsource-variable/space-grotesk@5.2.10': {}
+  '@fontsource-variable/space-grotesk@5.3.0': {}
 
   '@iconify-json/svg-spinners@1.2.4':
     dependencies:
@@ -2547,9 +2547,9 @@ snapshots:
       vite: 8.3.4(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.6.1)
       vitefu: 1.1.3(vite@8.3.4(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.6.1))
 
-  '@teach-stack/css@0.1.4(@fontsource-variable/space-grotesk@5.2.10)':
+  '@teach-stack/css@0.1.5(@fontsource-variable/space-grotesk@5.3.0)':
     dependencies:
-      '@fontsource-variable/space-grotesk': 5.2.10
+      '@fontsource-variable/space-grotesk': 5.3.0
 
   '@types/emscripten@1.41.5': {}
 
